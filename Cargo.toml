@@ -1,0 +1,27 @@
+[package]
+name = "incendio"
+version = "0.0.1"
+edition = "2021"
+authors = ["Andrea Reni <mail@x71c9.com>"]
+description = "Provision an ephemeral VM on AWS, GCP, or Hetzner to create a private, temporary VPN tunnel; auto-connect your local machine, and ensure complete teardown and cleanup on exit or failure for maximum privacy."
+license = "MIT"
+repository = "https://github.com/x71c9/incendio"
+readme = "README.md"
+keywords = [
+  "cli",
+  "vpn",
+  "privacy",
+  "provisioning",
+  "tunnel",
+]
+categories = [
+  "command-line-utilities",
+  "network-programming",
+  "security",
+  "virtualization",
+  "cloud-services"
+]
+
+[dependencies]
+fuoco = "0.0.4"
+clap = { version = "4.3", features = ["derive"] }
