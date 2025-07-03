@@ -20,22 +20,11 @@ SERVER_PUBLIC_KEY=$(<server_public.key)
 CLIENT_PRIVATE_KEY=$(<client_private.key)
 CLIENT_PUBLIC_KEY=$(<client_public.key)
 
-echo "Creating wg0.conf..."
-
-cat > wg0.conf <<EOF
-[Interface]
-Address = 10.0.0.1/24
-ListenPort = 51820
-PrivateKey = $SERVER_PRIVATE_KEY
-PostUp = iptables -t nat -A POSTROUTING -o ens5 -j MASQUERADE
-PostDown = iptables -t nat -D POSTROUTING -o ens5 -j MASQUERADE
-
-[Peer]
-PublicKey = $CLIENT_PUBLIC_KEY
-AllowedIPs = 10.0.0.2/32
-EOF
-
 echo "Creating cloud-init.sh..."
+
+#
+# ens5 is the default interface in Amazon Linux 2023
+#
 
 cat > cloud-init.sh <<EOF
 #!/bin/bash
@@ -52,8 +41,8 @@ cat > /etc/wireguard/wg0.conf <<CONFIG
 Address = 10.0.0.1/24
 ListenPort = 51820
 PrivateKey = $SERVER_PRIVATE_KEY
-PostUp = iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+PostUp = iptables -t nat -A POSTROUTING -o ens5 -j MASQUERADE
+PostDown = iptables -t nat -D POSTROUTING -o ens5 -j MASQUERADE
 
 [Peer]
 PublicKey = $CLIENT_PUBLIC_KEY
